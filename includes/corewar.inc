@@ -15,12 +15,31 @@ STRUC		s_corewar
 .nbr_live_cur:		RESD	1		; int
 .is_desassembler:	RESD	1		; int
 .cycle_to_dir_cur:	RESD	1		; int
-.size:
+ENDSTRUC
+
+STRUC		s_champions
+.filename:		RESD	1		; char *
+.size:			RESD	1		; int
+.prog_number:		RESD	1		; unsigned int
+.load_address:		RESD	1		; unsigned int
+.name:			RESD	1		; char *
+.comment:		RESD	1		; char *
+.reg:			RESD	1		; int *
+.pc:			RESD	1		; int
+.carry:			RESD	1		; unsigned int
+.last_live:		RESD	1		; unsigned int
+.cycle_to_wait:		RESD	1		; int
+.color_gui:		RESD	1		; int
+.next:			RESD	1		; s_champions *
 ENDSTRUC
 
 extern printf
 extern get_args
 extern is_number
 global main
+
+%define SIZE_S_COREWAR		(48)
+%define SIZE_S_CHAMPIONS	(52)
+%define MALLOC_FAILED		'error: malloc failed !', 10, 0
 
 %endif

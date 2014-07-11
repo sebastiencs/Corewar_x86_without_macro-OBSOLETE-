@@ -4,6 +4,7 @@ NAME		= corewar
 SRCS		= src/main.asm			\
 		  src/arguments.asm		\
 		  src/get_dump.asm		\
+		  src/list_champions.asm	\
 		  src/utils/check_args.asm	\
 		  src/utils/usage.asm		\
 		  src/utils/my_strcmp.asm
