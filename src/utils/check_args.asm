@@ -6,80 +6,16 @@ str3:	db '-a', 0
 str4:	db '-d', 0
 str5:	db '.cor', 0
 
-str_test: db 'ecx = %d', 10, 0
-
 section .text
 
-global	is_number
+global	is_numbers
 global	is_options
 global	is_file_dot_cor
 global	is_one_file_cor
 
 extern	strcmp
 
-extern printf
-
-my_putstr:
-
-	push ebp
-	mov ebp, esp
-
-	push eax
-	push ebx
-	push edx
-	push ecx
-
-	cmp byte [ebp + 8], 0
-	je .END
-
-	mov ebx, 1
-	mov edx, 1
-
-.LOOP   mov eax, [ebp + 8]
-	cmp byte [eax], 0
-	je .END
-	mov eax, 4
-	mov ecx, [ebp + 8]
-	int 80h
-        inc dword [ebp + 8]
-	jmp .LOOP
-
-.END    pop ecx
-	pop edx
-	pop ebx
-	pop eax
-	mov esp, ebp
-	pop ebp
-
-	ret
-
-my_putnb:
-
-	push ebp
-	mov ebp, esp
-
-	push eax
-	push ebx
-	push ecx
-	push edx
-
-	mov eax, 4
-	mov ecx, [ebp + 8]
-	add ecx, '0'
-	mov ebx, 1
-	mov edx, 1
-	int 80h
-	pop ecx
-	pop edx
-	pop ebx
-	pop eax
-	mov esp, ebp
-	pop ebp
-
-	ret
-
-
-is_number:
+is_numbers:
 
 	push	ebp
 	mov	ebp, esp
@@ -115,6 +51,8 @@ is_options:
 	push	ebp
 	mov	ebp, esp
 
+	push	ecx
+
 	push	str1
 	push	dword [ebp + 8]
 	call	strcmp
@@ -143,12 +81,14 @@ is_options:
 	cmp	eax, 0
 	je	.EXIT
 
-.END	mov	esp, ebp
+.END	pop	ecx
+	mov	esp, ebp
 	pop	ebp
 	mov	eax, 0
 	ret
 
-.EXIT	mov	esp, ebp
+.EXIT	pop	ecx
+	mov	esp, ebp
 	pop	ebp
 	mov	eax, 1
 	ret
@@ -170,6 +110,8 @@ is_file_dot_cor:
 .ENDL	cmp	dword [ebp - 4], 5
 	jl	.EXIT
 
+	push	ecx
+
 	sub	dword [ebp - 4], 4
 	push	str5
 	mov	eax, [ebp + 8]
@@ -178,9 +120,10 @@ is_file_dot_cor:
 	call	strcmp
 	add	esp, 8
 
+	pop	ecx
+
 	cmp	eax, 0
 	jne	.EXIT
-
 
 .END	add	esp, 4
 	mov	esp, ebp
@@ -199,17 +142,15 @@ is_one_file_cor:
 	push	ebp
 	mov	ebp, esp
 
+	push	ecx
+	push	edx
+
 	mov	ecx, 1
 	mov	edx, 0
 
 .LOOP	mov	eax, [ebp + 8]
 	cmp	ecx, eax
 	jge	.ENDL
-
-	mov	eax, [ebp + 12]
-	push	dword [eax + (ecx * 4)]
-	call	my_putstr
-	add	esp, 4
 
 	mov	eax, [ebp + 12]
 	push	dword [eax + (ecx * 4)]
@@ -224,13 +165,16 @@ is_one_file_cor:
 .ENDL	cmp	dword edx, 0
 	je	.EXIT
 
-.END	mov	esp, ebp
+.END	pop	edx
+	pop	ecx
+	mov	esp, ebp
 	pop	ebp
 	mov	eax, 0
 	ret
 
-.EXIT	mov	esp, ebp
+.EXIT	pop	edx
+	pop	ecx
+	mov	esp, ebp
 	pop	ebp
 	mov	eax, -1
 	ret
-	

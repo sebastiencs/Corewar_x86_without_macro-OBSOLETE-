@@ -27,9 +27,9 @@ main:
 	push	ebp
 	mov	ebp, esp
 
-	push	dword [ebp + 8]
-	push	dword [ebp + 12]
 	push	t_corewar
+	push	dword [ebp + 12]
+	push	dword [ebp + 8]
 	call	get_args
 	add	esp, 12
 
