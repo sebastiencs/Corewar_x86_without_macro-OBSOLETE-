@@ -3,24 +3,30 @@
 
 section .data
 
-t_corewar:	ISTRUC s_corewar
-AT s_corewar.arena,		DD	0
-AT s_corewar.info_arena,	DD	0
-AT s_corewar.nb_champions,	DD	0
-AT s_corewar.champions,		DD	0
-AT s_corewar.last_champions,	DD	0
-AT s_corewar.last_live_nb,	DD	0
-AT s_corewar.last_live_name,	DD	0
-AT s_corewar.prog_number_max,	DD	0
-AT s_corewar.nbr_cycle_dump,	DD	0
-AT s_corewar.nbr_live_cur,	DD	0
-AT s_corewar.is_desassembler,	DD	0
-AT s_corewar.cycle_to_dir_cur,	DD	0
-IEND
+t_corewar:
+istruc			s_corewar
+  at s_corewar.arena,			dd	0
+  at s_corewar.info_arena,		dd	0
+  at s_corewar.nb_champions,		dd	0
+  at s_corewar.champions,		dd	0
+  at s_corewar.last_champions,		dd	0
+  at s_corewar.last_live_nb,		dd	0
+  at s_corewar.last_live_name,		dd	0
+  at s_corewar.prog_number_max,		dd	0
+  at s_corewar.nbr_cycle_dump,		dd	0
+  at s_corewar.nbr_live_cur,		dd	0
+  at s_corewar.is_desassembler,		dd	0
+  at s_corewar.cycle_to_dir_cur,	dd	0
+iend
 
 nbr: db 'argc = %d argv[1] = %s', 10, 0
 
 section .text
+
+extern get_args
+extern load_arena
+
+extern printa
 
 main:
 
@@ -32,6 +38,19 @@ main:
 	push	dword [ebp + 8]
 	call	get_args
 	add	esp, 12
+	cmp	eax, -1
+	je	.EXIT
+
+	push	t_corewar
+	call	load_arena
+	add	esp, 4
+	cmp	eax, -1
+	je	.EXIT
+
+	mov	eax, t_corewar
+	push	t_corewar
+	call	printa
+	add	esp, 4
 
 	mov	esp, ebp
 	pop	ebp
@@ -39,7 +58,9 @@ main:
 	mov	eax, 0
 	ret
 
-.EXIT	mov	eax, -1
+.EXIT	mov	esp, ebp
+	pop	ebp
+	mov	eax, -1
 	ret
 
 	; push	ebp

@@ -1,9 +1,9 @@
+
+%include "corewar.inc"
+
 section .data
 
 str1:	db '-d', 0
-
-ok:	db 'OK', 10, 0
-no:	db 'NO OK', 10, 0
 
 section .text
 
@@ -16,6 +16,11 @@ extern usage
 extern get_dump
 extern printf
 extern my_strcmp
+extern save_args
+extern attribute_prog_number
+extern attribute_address
+
+extern printa
 
 global get_args
 
@@ -142,15 +147,40 @@ get_args:
 	cmp	eax, -1
 	je	.USAGE
 
-	push	ok
-	call	my_putstr
-	add	esp, 4
-
 	push	dword [ebp + 16]
 	push	dword [ebp + 12]
 	push	dword [ebp + 8]
 	call	get_dump
 	add	esp, 12
+
+	push	dword [ebp + 16]
+	push	dword [ebp + 12]
+	push	dword [ebp + 8]
+	call	save_args
+	add	esp, 12
+	cmp	eax, -1
+	je	.EXIT
+
+	mov	eax, [ebp + 16]
+	push	dword [eax + s_corewar.nb_champions]
+	push	dword [eax + s_corewar.champions]
+	call	attribute_prog_number
+	add	esp, 8
+	cmp	eax, -1
+	je	.EXIT
+
+	mov	eax, [ebp + 16]
+	push	dword [eax + s_corewar.nb_champions]
+	push	dword [eax + s_corewar.champions]
+	call	attribute_address
+	add	esp, 8
+	cmp	eax, -1
+	je	.EXIT
+
+
+	; push	dword [ebp + 16]
+	; call	printa
+	; add	esp, 4
 
 .END	mov	esp, ebp
 	pop	ebp
@@ -163,4 +193,4 @@ get_args:
 	ret
 
 .USAGE	call	usage
-	jmp	.END
+	jmp	.EXIT

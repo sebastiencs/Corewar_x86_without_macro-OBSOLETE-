@@ -33,13 +33,36 @@ STRUC		s_champions
 .next:			RESD	1		; s_champions *
 ENDSTRUC
 
+STRUC		s_gui
+.screen:		RESD	1		; SDL_Surface *
+.byte_arena:		RESD	1		; SDL_Surface *
+.background:		RESD	1		; SDL_Surface *
+.players:		RESD	5		; SDL_Surface *
+.font:			RESD	1		; TTF_Font *
+.font_info:		RESD	1		; TTF_Font *
+.list_pc:		RESD	1		; int *
+.pos_background:	RESD	2		; SDL_Rect
+.my_color:		RESD	1		; SDL_Color
+ENDSTRUC
+
 extern printf
-extern get_args
+;extern get_args
 extern is_number
 global main
 
 %define SIZE_S_COREWAR		(48)
 %define SIZE_S_CHAMPIONS	(52)
 %define MALLOC_FAILED		'error: malloc failed !', 10, 0
+
+%define MEM_SIZE		(6 * 1024)
+%define CYCLE_TO_DIE		(1536)
+%define COREWAR_EXEC_MAGIC	(0xea83f3)
+%define PROG_NAME_LENGTH	(128)
+%define COMMENT_LENGTH		(2048)
+%define REG_NUMBER		(16)
+
+%define O_RDONLY		(0)
+%define SEEK_SET		(0)
+%define SDL_INIT_VIDEO		(32)
 
 %endif

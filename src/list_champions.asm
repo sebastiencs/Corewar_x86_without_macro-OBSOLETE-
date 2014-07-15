@@ -53,30 +53,47 @@ push_champion:
 	push	ebp
 	mov	ebp, esp
 
-	mov	eax, [ebp + 8]
-	mov	eax, [eax + s_corewar.champions]
-	push	eax
+	push	edx
 
-	cmp	eax, 0
-	je	.CREATE
-
-.EXIST	mov	eax, [ebp - 4]
-	cmp	dword [eax + s_champions.next], 0
-	je	.ENDL
-	mov	eax, [eax + s_champions.next]
-	mov	dword [ebp - 4], eax
-	jmp	.EXIST
-
-.ENDL	push	[ebp + 20]
-	push	[ebp + 16]
-	push	[ebp + 12]
+	push	dword [ebp + 20]
+	push	dword [ebp + 16]
+	push	dword [ebp + 12]
 	call	create_champion
 	add	esp, 12
 	cmp	eax, 0
 	je	.FAIL
+	mov	edx, eax
 
-	mov	ebp + 4, eax
+	mov	eax, [ebp + 8]
+	mov	eax, [eax + s_corewar.champions]
 
-.CREATE	nop
+	cmp	eax, 0
+	je	.CREATE
 
-.FAIL	nop
+.EXIST	cmp	dword [eax + s_champions.next], 0
+	je	.ENDL
+	mov	eax, [eax + s_champions.next]
+	jmp	.EXIST
+
+.ENDL	mov	[eax + s_champions.next], edx
+
+	mov	eax, [ebp + 8]
+	mov	[eax + s_corewar.last_champions], edx
+
+	xor	eax, eax
+	jmp	.END
+
+.CREATE	mov	eax, [ebp + 8]
+	mov	[eax + s_corewar.champions], edx
+
+	mov	[eax + s_corewar.last_champions], edx
+
+	xor	eax, eax
+	jmp	.END
+
+.FAIL	mov	eax, -1
+
+.END	pop	edx
+	mov	esp, ebp
+	pop	ebp
+	ret
