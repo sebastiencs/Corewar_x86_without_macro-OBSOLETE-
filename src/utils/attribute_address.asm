@@ -37,6 +37,7 @@ attribute_address:
 	je	.END
 
 	mov	[eax + s_champions.load_address], edx
+	mov	[eax + s_champions.pc], edx
 
 	add	edx, dword [ebp - 8]
 

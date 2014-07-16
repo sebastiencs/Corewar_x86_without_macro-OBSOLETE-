@@ -2,67 +2,84 @@
 %ifndef COREWAR_INC
  %define COREWAR_INC
 
-STRUC		s_corewar
-.arena:			RESD	1		; char *
-.info_arena:		RESD	1		; char *
-.nb_champions:		RESD	1		; unsigned int
-.champions:		RESD	1		; t_champions *
-.last_champions:	RESD	1		; t_champions *
-.last_live_nb:		RESD	1		; int
-.last_live_name:	RESD	1		; char *
-.prog_number_max:	RESD	1		; unsigned int
-.nbr_cycle_dump:	RESD	1		; int
-.nbr_live_cur:		RESD	1		; int
-.is_desassembler:	RESD	1		; int
-.cycle_to_dir_cur:	RESD	1		; int
-ENDSTRUC
+struc		s_corewar
+ .arena:		resd	1		; char *
+ .info_arena:		resd	1		; char *
+ .nb_champions:		resd	1		; unsigned int
+ .champions:		resd	1		; t_champions *
+ .last_champions:	resd	1		; t_champions *
+ .last_live_nb:		resd	1		; int
+ .last_live_name:	resd	1		; char *
+ .prog_number_max:	resd	1		; unsigned int
+ .nbr_cycle_dump:	resd	1		; int
+ .nbr_live_cur:		resd	1		; int
+ .is_desassembler:	resd	1		; int
+ .cycle_to_dir_cur:	resd	1		; int
+endstruc
 
-STRUC		s_champions
-.filename:		RESD	1		; char *
-.size:			RESD	1		; int
-.prog_number:		RESD	1		; unsigned int
-.load_address:		RESD	1		; unsigned int
-.name:			RESD	1		; char *
-.comment:		RESD	1		; char *
-.reg:			RESD	1		; int *
-.pc:			RESD	1		; int
-.carry:			RESD	1		; unsigned int
-.last_live:		RESD	1		; unsigned int
-.cycle_to_wait:		RESD	1		; int
-.color_gui:		RESD	1		; int
-.next:			RESD	1		; s_champions *
-ENDSTRUC
+struc		s_champions
+ .filename:		resd	1		; char *
+ .size:			resd	1		; int
+ .prog_number:		resd	1		; unsigned int
+ .load_address:		resd	1		; unsigned int
+ .name:			resd	1		; char *
+ .comment:		resd	1		; char *
+ .reg:			resd	1		; int *
+ .pc:			resd	1		; int
+ .carry:		resd	1		; unsigned int
+ .last_live:		resd	1		; unsigned int
+ .cycle_to_wait:	resd	1		; int
+ .color_gui:		resd	1		; int
+ .next:			resd	1		; s_champions *
+endstruc
 
-STRUC		s_gui
-.screen:		RESD	1		; SDL_Surface *
-.byte_arena:		RESD	1		; SDL_Surface *
-.background:		RESD	1		; SDL_Surface *
-.players:		RESD	5		; SDL_Surface *
-.font:			RESD	1		; TTF_Font *
-.font_info:		RESD	1		; TTF_Font *
-.list_pc:		RESD	1		; int *
-.pos_background:	RESD	2		; SDL_Rect
-.my_color:		RESD	1		; SDL_Color
-ENDSTRUC
+struc		s_gui
+ .screen:		resd	1		; SDL_Surface *
+ .byte_arena:		resd	1		; SDL_Surface *
+ .background:		resd	1		; SDL_Surface *
+ .players:		resd	5		; SDL_Surface[5] *
+ .font:			resd	1		; TTF_Font *
+ .font_info:		resd	1		; TTF_Font *
+ .list_pc:		resd	1		; int *
+ .pos_background:	resd	2		; SDL_Rect
+ .my_color:		resd	1		; SDL_Color
+endstruc
+
+struc		SDL_Rect
+ .x:			resw	1
+ .y:			resw	1
+ .w:			resw	1
+ .h:			resw	1
+endstruc
+
+struc		SDL_Color
+ .r:			resb	1
+ .g:			resb	1
+ .b:			resb	1
+ .unused:		resb	1
+endstruc
 
 extern printf
-;extern get_args
 extern is_number
 global main
 
-%define SIZE_S_COREWAR		(48)
-%define SIZE_S_CHAMPIONS	(52)
-%define MALLOC_FAILED		'error: malloc failed !', 10, 0
+ %define SIZE_S_COREWAR		(48)
+ %define SIZE_S_CHAMPIONS	(52)
+ %define MALLOC_FAILED		'error: malloc failed !', 10, 0
 
-%define MEM_SIZE		(6 * 1024)
-%define CYCLE_TO_DIE		(1536)
-%define COREWAR_EXEC_MAGIC	(0xea83f3)
-%define PROG_NAME_LENGTH	(128)
-%define COMMENT_LENGTH		(2048)
-%define REG_NUMBER		(16)
+ %define MAX_PC			(15000)
+ %define WIN_X			(1345)
+ %define WIN_Y			(800)
+ %define MEM_SIZE		(6 * 1024)
+ %define CYCLE_TO_DIE		(1536)
+ %define COREWAR_EXEC_MAGIC	(0xea83f3)
+ %define PROG_NAME_LENGTH	(128)
+ %define COMMENT_LENGTH		(2048)
+ %define REG_NUMBER		(16)
 
-%define O_RDONLY		(0)
-%define SEEK_SET		(0)
-%define SDL_INIT_VIDEO		(32)
+ %define O_RDONLY		(0)
+ %define SEEK_SET		(0)
+ %define SDL_INIT_VIDEO		(32)
+ %define SDL_HWSURFACE		(1)
 
 %endif

@@ -34,7 +34,19 @@ SRCS		= src/main.asm					\
 		  src/utils/get_name_comment_champions.asm	\
 		  src/utils/get_comment.asm			\
 		  src/utils/my_strcmp.asm			\
-		  src/gui/my_gui.asm
+		  src/utils/my_strlen.asm			\
+		  src/utils/my_strcat.asm			\
+		  src/gui/my_gui.asm				\
+		  src/gui/get_image_path.asm			\
+		  src/gui/load_players_name.asm			\
+		  src/gui/put_background.asm			\
+		  src/gui/get_list_pc.asm			\
+		  src/gui/is_pc.asm				\
+		  src/gui/set_color_with_pc.asm			\
+		  src/gui/hex_to_str.asm			\
+		  src/gui/get_color.asm				\
+		  src/gui/print_bytes.asm			\
+		  src/gui/get_color_champions.asm
 
 OBJS		= $(SRCS:.asm=.o)
 
@@ -46,14 +58,14 @@ INC		= -I includes/
 
 NASMFLAGS	= -f elf $(INC) -g -F dwarf 
 
-CFLAGS		= -Wall -Wextra -L./SDL -lSDL -lSDL_ttf -Xlinker "-rpath=./SDL"
+CFLAGS		= -Wall -Wextra -L./SDL -lSDL -lSDL_ttf -Xlinker "-rpath=./SDL" -lpthread -lm -ldl -lSDL
 
 RM		= rm -f
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-		$(CC) -m32 -o $(NAME) $(OBJS) tmp.o -ggdb
+		$(CC) -m32 -o $(NAME) $(OBJS) tmp.o -ggdb $(CFLAGS)
 		@echo -e "\033[0;032m[$(NAME)] Compiled\033[0;0m"
 
 %.o:		%.asm

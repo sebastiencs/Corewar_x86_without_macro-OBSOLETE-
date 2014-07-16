@@ -40,8 +40,8 @@ int		printa(t_corewar *core)
   tmp = core->champions;
   while (tmp)
   {
-    printf("filename = %s addr = %d prog_number = %d size = %d name = '%s' comment = '%s'\n",
-	   tmp->filename, tmp->load_address, tmp->prog_number, tmp->size, tmp->name, tmp->comment);
+    printf("filename = %s addr = %d prog_number = %d size = %d name = '%s' comment = '%s' pc = %d\n",
+	   tmp->filename, tmp->load_address, tmp->prog_number, tmp->size, tmp->name, tmp->comment, tmp->pc);
     tmp = tmp->next;
   }
   return (0);
