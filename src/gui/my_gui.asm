@@ -8,6 +8,8 @@ str2:	db 'error: SDL_SetVideoMode', 10, 0
 str3:	db 'Corewar ASM', 0
 str4:	db 'error: malloc', 10, 0
 
+str5:	db 'OK', 10, 0
+
 t_gui:
 istruc	s_gui
   times 14	dd	0
@@ -25,6 +27,7 @@ extern get_image_path
 extern get_color_champions
 extern put_background
 extern get_arena
+extern disp_gui
 
 global my_gui
 
@@ -32,6 +35,8 @@ my_gui:
 
 	push	ebp
 	mov	ebp, esp
+
+	push	edx
 
 	push	dword SDL_INIT_VIDEO
 	call	SDL_Init
@@ -68,18 +73,23 @@ my_gui:
 	cmp	eax, -1
 	je	.FAIL
 
-	push	dword (4 * (MAX_PC * 2))
+	push	(4 * (MAX_PC * 2))
 	call	malloc
 	add	esp, 4
 	cmp	eax, 0
 	je	.FAILM
 
-	mov	eax, t_gui
-	mov	[eax + s_gui.list_pc], eax
+	mov	edx, t_gui
+	mov	[edx + s_gui.list_pc], eax
+
+; TO RM
+;.TEST	invoke	disp_gui, t_gui
+
+
 
 	push	dword t_gui
 	push	dword [ebp + 8]
-;	call	get_arena
+	call	get_arena
 	add	esp, 8
 	cmp	eax, -1
 	je	.FAIL
@@ -113,6 +123,7 @@ my_gui:
 
 .FAIL	mov	eax, -1
 
-.END	mov	esp, ebp
+.END	pop	edx
+	mov	esp, ebp
 	pop	ebp
 	ret

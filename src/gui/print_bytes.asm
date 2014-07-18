@@ -5,6 +5,8 @@ section .data
 
 str1:	db 'error: SDL_BlitSurface', 10, 0
 
+str2:	db 'cur = %d', 10, 0
+
 section .text
 
 extern get_color
@@ -12,15 +14,17 @@ extern SDL_UpperBlit    ;SDL_BlitSurface
 extern SDL_FreeSurface
 extern my_putstr
 
+extern printf
+
 global print_bytes
 
 print_bytes:
 
 	push	ebp
-	mov	ebp, esp
+.TE	mov	ebp, esp
 
 	sub	esp, 8
-	; [ebp - 4]  position
+	; [ebp - 8]  position (2 * dword)
 
 	mov	dword [ebp - 4], 0
 	mov	dword [ebp - 8], 0
@@ -38,22 +42,24 @@ print_bytes:
 	je	.FAIL
 
 	push	ecx
-	lea	eax, [ebp - 4]
+	lea	eax, [ebp - 8]
 	push	dword eax
 	mov	eax, [ebp + 12]
+;	add	eax, s_gui.screen
 	mov	eax, [eax + s_gui.screen]
 	push	eax
 	push	dword 0
 	mov	eax, [ebp + 12]
 	mov	eax, [eax + s_gui.byte_arena]
 	push	dword eax
-	call	SDL_UpperBlit
+.OL	call	SDL_UpperBlit
 	add	esp, 16
 	cmp	eax, 0
 	jl	.FAILB
 
 	pop	ecx
-	lea	eax, [ebp - 4]
+
+	lea	eax, [ebp - 8]
 	add	word [eax + SDL_Rect.x], 14
 
 .IF	cmp	ecx, 0
@@ -67,7 +73,7 @@ print_bytes:
 	cmp	edx, 0
 	jne	.ENDIF
 
-	lea	eax, [ebp - 4]
+	lea	eax, [ebp - 8]
 	mov	word [eax + SDL_Rect.x], 0
 	add	word [eax + SDL_Rect.y], 11
 

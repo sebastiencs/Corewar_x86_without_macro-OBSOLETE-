@@ -19,13 +19,16 @@ istruc s_corewar
     at s_corewar.cycle_to_dir_cur,	dd	0
 iend
 
-nbr: db 'argc = %d argv[1] = %s', 10, 0
+nbr: db 'argc = %s argv[1] = %s', 10, 0
 
 section .text
 
 extern get_args
 extern load_arena
 extern my_gui
+
+extern my_showmem
+extern disp_core
 
 extern printa
 
@@ -47,6 +50,9 @@ main:
 	add	esp, 4
 	cmp	eax, -1
 	je	.EXIT
+;
+;	invoke	disp_core, t_corewar
+;
 
 	mov	eax, [ebp + 12]
 	mov	eax, [eax]
@@ -54,14 +60,9 @@ main:
 	push	t_corewar
 	call	my_gui
 	add	esp, 8
-	cmp	eax, -1
-	je	.EXIT
+	_check_	.EXIT, -1
 
-
-	mov	eax, t_corewar
-	push	t_corewar
-	call	printa
-	add	esp, 4
+;	invoke	printa, t_corewar
 
 	mov	esp, ebp
 	pop	ebp
@@ -73,25 +74,3 @@ main:
 	pop	ebp
 	mov	eax, -1
 	ret
-
-	; push	ebp
-	; mov	ebp, esp
-
-	; mov	ecx, [ebp + 8]
-	; mov	edx, [ebp + 12]
-
-	; push	ecx
-	; push	edx
-
-	; push	dword [edx + 4]
-	; push	ecx
-	; push	nbr
-	; call	printf
-	; add	esp, 12
-
-	; mov	esp, ebp
-	; pop	ebp
-
-	; mov	eax, 0
-
-	; ret

@@ -65,11 +65,10 @@ load_file_in_arena:
 
 	mov	edx, [ebp - 16]
 	mov	ebx, [ebp + 8]
-	lea	edx, [ebx + edx]
-	mov	ebx, [ebp - 8]
-	mov	[edx], byte dl
-
-
+	add	ebx, edx
+	mov	edx, 0
+	mov	dl, byte [ebp - 8]
+	mov	[ebx], byte dl
 
 	; push	dword [ebp + 12]
 	; call	disp_arena

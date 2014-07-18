@@ -46,6 +46,8 @@ SRCS		= src/main.asm					\
 		  src/gui/hex_to_str.asm			\
 		  src/gui/get_color.asm				\
 		  src/gui/print_bytes.asm			\
+		  src/gui/disp_arena.asm			\
+		  src/gui/get_arena.asm				\
 		  src/gui/get_color_champions.asm
 
 OBJS		= $(SRCS:.asm=.o)
@@ -56,7 +58,7 @@ CC		= gcc
 
 INC		= -I includes/
 
-NASMFLAGS	= -f elf $(INC) -g -F dwarf 
+NASMFLAGS	= -f elf $(INC) -g -F dwarf -Werror
 
 CFLAGS		= -Wall -Wextra -L./SDL -lSDL -lSDL_ttf -Xlinker "-rpath=./SDL" -lpthread -lm -ldl -lSDL
 

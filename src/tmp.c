@@ -1,4 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+// #include "SDL/SDL.h"
+#include "SDL/SDL_ttf.h"
 
 typedef struct          s_champions
 {
@@ -33,6 +40,55 @@ typedef struct          s_corewar
   int                   cycle_to_die_cur;
 }                       t_corewar;
 
+typedef struct          s_gui
+{
+  void			*screen;
+  void			*byte_arena;
+  void			*background;
+  void			 *players[5];
+  /* SDL_Surface           *screen; */
+  /* SDL_Surface           *byte_arena; */
+  /* SDL_Surface           *background; */
+  /* SDL_Surface           *players[5]; */
+  void              *font;
+  void              *font_info;
+  /* TTF_Font              *font; */
+  /* TTF_Font              *font_info; */
+  int                   *list_pc;
+  SDL_Rect              pos_background;
+  SDL_Color             my_color;
+}                       t_gui;
+
+void	disp_core(t_corewar *core)
+{
+  printf("&core = %x\n&arena = %x\n&info_arena = %x\n&champions = %x\n\n",
+	 core, core->arena, core->info_arena, core->champions);
+}
+
+void		disp_list(t_corewar *core, t_gui *gui)
+{
+  t_champions	*tmp;
+  int		i;
+  int		*list;
+
+  i = 0;
+  list = gui->list_pc;
+  tmp = core->champions;
+  while (tmp)
+  {
+    printf("pc = %d couleur = %d\n", list[i], list[i + 1]);
+    i += 2;
+    tmp = tmp->next;
+  }
+  printf("END\n");
+}
+
+void	disp_gui(t_gui *gui)
+{
+  printf(" &gui = %x\n &screen = %x\n &byte_arena = %x\n &list_pc = %x\n\n",
+	 gui, gui->screen, gui->byte_arena, gui->list_pc);
+}
+
 int		printa(t_corewar *core)
 {
   t_champions	*tmp;
@@ -40,7 +96,7 @@ int		printa(t_corewar *core)
   tmp = core->champions;
   while (tmp)
   {
-    printf("filename = %s addr = %d prog_number = %d size = %d name = '%s' comment = '%s' pc = %d\n",
+    printf("filename = %s addr = %d prog_number = %d size = %d name = '%s' comment = '%s' pc = %d\n\n",
 	   tmp->filename, tmp->load_address, tmp->prog_number, tmp->size, tmp->name, tmp->comment, tmp->pc);
     tmp = tmp->next;
   }
@@ -64,7 +120,7 @@ void	my_putnbr(int nb)
   my_putchar((nb % 10) + '0');
 }
 
-void	disp_arena(unsigned char *arena)
+void	adisp_arena(unsigned char *arena)
 {
   int	i;
 
@@ -75,4 +131,41 @@ void	disp_arena(unsigned char *arena)
     my_putnbr(arena[i]);
     i += 1;
   }
+}
+
+void            my_put_hexa(unsigned char nb, char *base, int is_first)
+{
+  if (nb < 16 && is_first == 1)
+    my_putchar('0');
+  if (nb >= 16)
+    my_put_hexa(nb / 16, base, 0);
+  my_putchar(base[(nb % 16)]);
+}
+
+void            write_hex(int i, int line_cur, int size, unsigned char *str)
+{
+  while (i < (32 * line_cur + 32) && i < size)
+  {
+    my_put_hexa(str[i], "0123456789ABCDEF", 1);
+    i = i + 1;
+  }
+}
+
+int             my_showmem(unsigned char *str, int size)
+{
+  int           nb_lines;
+  int           line_cur;
+  int           i;
+
+  line_cur = 0;
+  i = 0;
+  nb_lines = 1 + size / 32;
+  while (line_cur < nb_lines && i < size)
+  {
+    write_hex(i, line_cur, size, str);
+    my_putchar('\n');
+    line_cur = line_cur + 1;
+    i = 32 * line_cur;
+  }
+  return (0);
 }

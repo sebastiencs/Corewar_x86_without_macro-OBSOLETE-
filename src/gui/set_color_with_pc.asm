@@ -13,12 +13,15 @@ extern my_putstr
 extern is_pc
 extern hex_to_str
 
+extern printf
+extern disp_core
+
 global set_color_with_pc
 
 set_color_with_pc:
 
 	push	ebp
-	mov	esp, ebp
+	mov	ebp, esp
 
 	sub	esp, 8
 	; [ebp - 4]  fg_color
@@ -26,17 +29,24 @@ set_color_with_pc:
 	; [ebp - 9]  str[1]
 	; [ebp - 10] str[2]
 	push	edx
+	push	ebx
 
 	mov	dword [ebp - 4], 0
 
 	mov	edx, [ebp + 16]
+
+;	invoke	disp_core, [ebp + 12]
+
+	; problem de ptr ici !
 
 	lea	eax, [ebp - 8]
 	push	eax
 	mov	eax, [ebp + 12]
 	mov	eax, [eax + s_corewar.arena]
 	add	eax, edx
-	mov	eax, [eax]
+	mov	ebx, eax
+	mov	eax, 0
+	mov	al, byte [ebx]
 	push	eax
 	call	hex_to_str
 	add	esp, 8
@@ -61,6 +71,8 @@ set_color_with_pc:
 	call	TTF_RenderText_Shaded
 	add	esp, 16
 
+;	invoke	disp_core, [ebp + 12]
+
 	mov	edx, [ebp + 8]
 	mov	[edx + s_gui.byte_arena], eax
 	jmp	.ENDIF
@@ -73,8 +85,10 @@ set_color_with_pc:
 	mov	eax, [ebp + 8]
 	mov	eax, [eax + s_gui.font]
 	push	eax
-	call	TTF_RenderText_Shaded
+	call	TTF_RenderText_Solid
 	add	esp, 12
+
+;	invoke	printf, str1
 
 	mov	edx, [ebp + 8]
 	mov	[edx + s_gui.byte_arena], eax

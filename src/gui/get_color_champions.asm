@@ -11,6 +11,10 @@ get_color_champions:
 	mov	ebp, esp
 
 	push	eax
+	push	edx
+
+	mov	edx, 0
+	mov	dl, byte [ebp + 12]
 
 	mov	eax, [ebp + 8]
 	add	eax, s_gui.my_color
@@ -20,19 +24,19 @@ get_color_champions:
 	mov	byte [eax + SDL_Color.b], 30
 	mov	byte [eax + SDL_Color.unused], 0
 
-	cmp	dword [ebp + 12], 0
+	cmp	edx, 0
 	je	.END
 
-	cmp	dword [ebp + 12], 4
+	cmp	edx, 4
 	jg	.END
 
-	cmp	dword [ebp + 12], 1
+	cmp	edx, 1
 	je	.ONE
-	cmp	dword [ebp + 12], 2
+	cmp	edx, 2
 	je	.TWO
-	cmp	dword [ebp + 12], 3
+	cmp	edx, 3
 	je	.THREE
-	cmp	dword [ebp + 12], 4
+	cmp	edx, 4
 	je	.FOUR
 
 	jmp	.END
@@ -56,7 +60,8 @@ get_color_champions:
 	mov	byte [eax + SDL_Color.g], 0
 	mov	byte [eax + SDL_Color.b], 66
 
-.END	pop	eax
+.END	pop	edx
+	pop	eax
 	mov	esp, ebp
 	pop	ebp
 	ret

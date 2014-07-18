@@ -2,6 +2,8 @@
 %ifndef COREWAR_INC
  %define COREWAR_INC
 
+ %include "macro.inc"
+
 struc		s_corewar
  .arena:		resd	1		; char *
  .info_arena:		resd	1		; char *

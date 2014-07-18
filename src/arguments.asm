@@ -135,6 +135,33 @@ is_error_in_args:
 	mov	eax, -1
 	ret
 
+; proc	get_args, argc, argv, core
+
+; 	invoke	is_error_in_args, [argc], [argv]
+; 	_check_	.USAGE, -1
+
+; 	invoke	get_dump, [argc],  [argv], [core]
+
+; 	invoke	save_args, [argc], [argv], [core]
+; 	_check_	.EXIT, -1
+
+; 	mov	eax, [core]
+; 	invoke	attribute_prog_number, [eax + s_corewar.champions], [eax + s_corewar.nb_champions]
+; 	_check_	.EXIT, -1
+
+; 	mov	eax, [core]
+; 	invoke	attribute_address, [eax + s_corewar.champions], [eax + s_corewar.nb_champions]
+; 	_check_	.EXIT, -1
+
+; 	xor	eax, eax
+; 	jmp	.ENDPROC
+
+; .USAGE	call	usage
+
+; .EXIT	mov	eax, -1
+
+; endproc
+
 get_args:
 
 	push	ebp
@@ -176,11 +203,6 @@ get_args:
 	add	esp, 8
 	cmp	eax, -1
 	je	.EXIT
-
-
-	; push	dword [ebp + 16]
-	; call	printa
-	; add	esp, 4
 
 .END	mov	esp, ebp
 	pop	ebp

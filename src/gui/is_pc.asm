@@ -1,9 +1,16 @@
 
 %include "corewar.inc"
 
+section .data
+
+str1:	db 'list[cur] = %d\n', 10, 0
+
 section .text
 
 extern get_color_champions
+
+extern printf
+extern disp_list
 
 global is_pc
 
@@ -15,6 +22,8 @@ is_pc:
 	sub	esp, 8
 	; [ebp - 4] cur
 	; [ebp - 8] j
+
+;	invoke	disp_list, [ebp + 8], [ebp + 12]
 
 	mov	eax, [ebp + 12]
 	mov	eax, [eax + s_gui.list_pc]		; eax -> list_pc
@@ -33,7 +42,10 @@ is_pc:
  	cmp	[eax], ecx
 	jne	.NEXT
 
-	push	dword [eax + 1]
+;	invoke	printf, str1, [eax]
+
+
+	push	dword [eax + 4]
 	push	dword [ebp + 12]
 	call	get_color_champions
 	add	esp, 8
@@ -41,8 +53,8 @@ is_pc:
 	jmp	.END1
 
 .NEXT	inc	dword [ebp - 8]
-	add	eax, 2
-	jmp	.NEXT
+	add	eax, 8
+	jmp	.LOOP
 
 .END	xor	eax, eax
 .END1	mov	esp, ebp
