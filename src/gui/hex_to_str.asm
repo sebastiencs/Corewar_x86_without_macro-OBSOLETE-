@@ -1,39 +1,47 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Filename: hex_to_str.asm
+;;  Author:   chapui_s
+;;  Created:  26/07/2014 17:59:45 (+08:00 UTC)
+;;  Updated:
+;;  URL:      https://github.com/sebastiencs/
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-section .data
-
-base:	db '0123456789ABCDEF', 0
+%include "macro.inc"
 
 section .text
 
-global hex_to_str
+proc	hex_to_str, nb, string
 
-hex_to_str:
+	pushx	ecx, edx, edi
 
-	push	ebp
-	mov	ebp, esp
+	mov	edx, [nb]
+	mov	edi, [string]
+	mov	ecx, 3
 
-	push	edx
+.LOOP	rol	dl, 4
+	movzx	eax, dl
+	and	eax, 0xF
 
-	mov	edx, [ebp + 12]
+	IF	eax, l, 0xA
 
-	mov	eax, 0
-	mov	al, byte [ebp + 8]
-	shr	al, 4
+		add	eax, '0'
 
-	mov	al, byte [base + eax]
-	mov	byte [edx], al
+	ELSE
 
-	mov	eax, 0
-	mov	al, byte [ebp + 8]
-	and	al, 0x0f
+		add	eax, 'A' - 0x0A
 
-	mov	al, byte [base + eax]
-	mov	byte [edx + 1], al
+	ENDIF
 
-	mov	byte [edx + 2], 0
+.NOT	stosb
+	loop	.LOOP
 
-	mov	eax, edx
-	pop	edx
-	mov	esp, ebp
-	pop	ebp
-	ret
+	xor	eax, eax
+	dec	edi
+	stosb
+	mov	eax, [string]
+
+	popx	ecx, edx, edi
+
+endproc

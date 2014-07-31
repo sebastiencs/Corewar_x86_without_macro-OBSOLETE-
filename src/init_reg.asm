@@ -10,6 +10,7 @@ init_reg:
 	push	ebp
 	mov	ebp, esp
 
+	push	eax
 	push	ecx
 	push	edx
 
@@ -27,6 +28,7 @@ init_reg:
 
 .ENDL	pop	edx
 	pop	ecx
+	pop	eax
 	mov	esp, ebp
 	pop	ebp
 	ret

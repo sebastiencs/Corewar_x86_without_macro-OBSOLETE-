@@ -39,6 +39,7 @@
  %endmacro
 
  %macro proc 1-*
+  %push context
   global %1
   %1:
   %assign _cur 8
@@ -50,17 +51,16 @@
   %endrep
   push	ebp
   mov	ebp, esp
-  %push context
  %endmacro
 
  %macro endproc 0
-  %ifctx context
-    %pop
-  %endif
   .ENDPROC	nop
   mov	esp, ebp
   pop	ebp
   ret
+  %ifctx context
+    %pop
+  %endif
  %endmacro
 
  %macro entryproc 0
@@ -120,5 +120,7 @@
    je	 %1
   %endif
  %endmacro
+
+ %define .endproc .ENDPROC
 
 %endif

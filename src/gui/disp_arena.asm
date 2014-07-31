@@ -3,7 +3,7 @@
 ;;  Filename: disp_arena.asm
 ;;  Author:   chapui_s
 ;;  Created:  16/07/2014 21:46:57 (+08:00 UTC)
-;;  Updated:  18/07/2014 00:05:43 (+08:00 UTC)
+;;  Updated:  19/07/2014 16:28:35 (+08:00 UTC)
 ;;  URL:      https://github.com/sebastiencs/
 ;; 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -28,6 +28,7 @@ extern SDL_Flip
 extern get_list_pc
 extern print_bytes
 extern my_putstr
+extern disp_info_players
 
 extern disp_core
 extern disp_gui
@@ -73,6 +74,15 @@ disp_arena:
 	jl	.FAILB
 
 	; ADD DISP_INFO_PLAYERS
+	push	dword [ebp + 20]
+	push	dword [ebp + 16]
+	push	dword [ebp + 12]
+	push	dword [ebp + 8]
+	call	disp_info_players
+	add	esp, 16
+	cmp	eax, -1
+	je	.FAIL
+
 
 	push	dword [ebp + 12]
 	push	dword [ebp + 8]

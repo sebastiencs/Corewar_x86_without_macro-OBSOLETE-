@@ -46,9 +46,11 @@ get_magic:
 	; cmp	eax, -1
 	; je	.FAILR
 
-	push	dword [ebp - 4]
-	call	little_to_big_endian
-	add	esp, 4
+	mov	dword eax, [ebp - 4]
+	bswap	eax			; Putin d'instruction ! (converti endian)
+	; push	dword [ebp - 4]
+	; call	little_to_big_endian
+	; add	esp, 4
 
 	cmp	dword eax, COREWAR_EXEC_MAGIC
 	jne	.FAIL

@@ -4,11 +4,12 @@
 section .data
 
 str_malloc_error:	db MALLOC_FAILED
-
 section .text
 
 extern my_putstr
 extern malloc
+
+extern printf
 
 global push_champion
 
@@ -17,7 +18,7 @@ create_champion:
 	push	ebp
 	mov	ebp, esp
 
-	push	edx
+	pushx	ebx, ecx, edx
 
 	push	dword SIZE_S_CHAMPIONS
 	call	malloc
@@ -43,7 +44,7 @@ create_champion:
 	call	my_putstr
 	add	esp, 4
 
-.END	pop	edx
+.END	popx	ebx, ecx, edx
 	mov	esp, ebp
 	pop	ebp
 	ret

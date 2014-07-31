@@ -13,8 +13,7 @@ get_color_champions:
 	push	eax
 	push	edx
 
-	mov	edx, 0
-	mov	dl, byte [ebp + 12]
+	movzx	edx, byte [ebp + 12]
 
 	mov	eax, [ebp + 8]
 	add	eax, s_gui.my_color

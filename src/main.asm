@@ -16,10 +16,8 @@ istruc s_corewar
     at s_corewar.nbr_cycle_dump,	dd	0
     at s_corewar.nbr_live_cur,		dd	0
     at s_corewar.is_desassembler,	dd	0
-    at s_corewar.cycle_to_dir_cur,	dd	0
+    at s_corewar.cycle_to_die_cur,	dd	0
 iend
-
-nbr: db 'argc = %s argv[1] = %s', 10, 0
 
 section .text
 
@@ -54,23 +52,25 @@ main:
 ;	invoke	disp_core, t_corewar
 ;
 
+	; mov	eax, t_corewar
+	; mov	eax, [eax + s_corewar.champions]
+	; mov	dword [eax + s_champions.pc], 266
+
 	mov	eax, [ebp + 12]
 	mov	eax, [eax]
 	push	eax
 	push	t_corewar
 	call	my_gui
 	add	esp, 8
-	_check_	.EXIT, -1
+	cmp	eax, -1
+	je	.EXIT
 
 ;	invoke	printa, t_corewar
+	xor	eax, eax
+	jmp	.END
 
-	mov	esp, ebp
+.EXIT	mov	eax, -1
+
+.END	mov	esp, ebp
 	pop	ebp
-
-	mov	eax, 0
-	ret
-
-.EXIT	mov	esp, ebp
-	pop	ebp
-	mov	eax, -1
 	ret

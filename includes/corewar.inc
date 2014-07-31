@@ -3,6 +3,13 @@
  %define COREWAR_INC
 
  %include "macro.inc"
+ %include "SDL_definitions.inc"
+
+struc		s_instruction
+ .code:			resb	1
+ .type:			resb	1
+ .params:		resd	4
+endstruc
 
 struc		s_corewar
  .arena:		resd	1		; char *
@@ -16,7 +23,7 @@ struc		s_corewar
  .nbr_cycle_dump:	resd	1		; int
  .nbr_live_cur:		resd	1		; int
  .is_desassembler:	resd	1		; int
- .cycle_to_dir_cur:	resd	1		; int
+ .cycle_to_die_cur:	resd	1		; int
 endstruc
 
 struc		s_champions
@@ -47,6 +54,28 @@ struc		s_gui
  .my_color:		resd	1		; SDL_Color
 endstruc
 
+struc		s_functions
+ .numero:		resd	1
+ .function:		resd	1
+endstruc
+
+struc		SDL_Surface
+ .flags:		resd	1
+ .format:		resd	1
+ .w:			resd	1
+ .h:			resd	1
+ .pitch:		resw	1
+ .pixels:		resd	1
+ .offset:		resd	1
+ .hwdata:		resd	1
+ .clip_rect:		resd	2
+ .unused1:		resd	1
+ .locked:		resd	1
+ .map:			resd	1
+ .format_version:	resd	1
+ .refcount:		resd	1
+endstruc
+
 struc		SDL_Rect
  .x:			resw	1
  .y:			resw	1
@@ -74,14 +103,35 @@ global main
  %define WIN_Y			(800)
  %define MEM_SIZE		(6 * 1024)
  %define CYCLE_TO_DIE		(1536)
+ %define CYCLE_DELTA		(5)
+ %define NBR_LIVE		(40)
  %define COREWAR_EXEC_MAGIC	(0xea83f3)
  %define PROG_NAME_LENGTH	(128)
  %define COMMENT_LENGTH		(2048)
  %define REG_NUMBER		(16)
+ %define IDX_MOD		(512)
 
  %define O_RDONLY		(0)
  %define SEEK_SET		(0)
  %define SDL_INIT_VIDEO		(32)
  %define SDL_HWSURFACE		(1)
+ %define SDL_BlitSurface	SDL_UpperBlit
+
+ %define LIVE			(1)
+ %define LD			(2)
+ %define ST			(3)
+ %define ADD			(4)
+ %define SUB			(5)
+ %define AND			(6)
+ %define OR			(7)
+ %define XOR			(8)
+ %define ZJMP			(9)
+ %define LDI			(10)
+ %define STI			(11)
+ %define FORK			(12)
+ %define LLD			(13)
+ %define LLDI			(14)
+ %define LFORK			(15)
+ %define AFF			(16)
 
 %endif

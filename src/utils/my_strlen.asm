@@ -1,30 +1,32 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Filename: my_strlen.asm
+;;  Author:   chapui_s
+;;  Created:  26/07/2014 15:41:47 (+08:00 UTC)
+;;  Updated:
+;;  URL:      https://github.com/sebastiencs/
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%include "macro.inc"
 
 section .text
 
-global my_strlen
+proc	my_strlen, string
 
-my_strlen:
+	pushx	ecx, edi
 
-	push	ebp
-	mov	ebp, esp
+	xor	eax, eax
+	mov	ecx, 0xffffffff
+	mov	edi, [string]
+	cld
 
-	push	ecx
+	repne	scasb
 
-	mov	ecx, 0
+	not	ecx
+	dec	ecx
 
-	cmp	dword [ebp + 8], 0
-	je	.END
+	mov	eax, ecx
+	popx	ecx, edi
 
-	mov	eax, [ebp + 8]
-
-.LOOP	cmp	byte [eax + ecx], 0
-	je	.END
-
-	inc	ecx
-	jmp	.LOOP
-
-.END	mov	eax, ecx
-	pop	ecx
-	mov	esp, ebp
-	pop	ebp
-	ret
+endproc

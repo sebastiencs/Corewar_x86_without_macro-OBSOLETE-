@@ -25,7 +25,7 @@ init_values_champions:
 .LOOP	cmp	eax, 0
 	je	.ENDL
 
-	push	eax
+.TEST	push	eax
 	push	dword (4 * (REG_NUMBER + 1))		; sizeof(int) * ...
 	call	malloc
 	add	esp, 4

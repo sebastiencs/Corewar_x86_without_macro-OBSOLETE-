@@ -29,8 +29,7 @@ get_color:
 	;add	eax, s_corewar.info_arena
 	add	eax, dword [ebp + 16]
 
-	mov	edx, 0
-	mov	dl, byte [eax]
+	movzx	edx, byte [eax]
 
 	push	dword edx
 	push	dword [ebp + 8]

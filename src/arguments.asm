@@ -24,40 +24,40 @@ extern printa
 
 global get_args
 
-global my_putstr
+; global my_putstr
 
-my_putstr:
+; my_putstr:
 
-        push ebp
-        mov ebp, esp
+;         push ebp
+;         mov ebp, esp
 
-        push eax
-        push ebx
-        push edx
-        push ecx
+;         push eax
+;         push ebx
+;         push edx
+;         push ecx
 
-        cmp byte [ebp + 8], 0
-        je .END
+;         cmp byte [ebp + 8], 0
+;         je .END
 
-        mov ebx, 1
-        mov edx, 1
+;         mov ebx, 1
+;         mov edx, 1
 
-.LOOP   mov eax, [ebp + 8]
-        cmp byte [eax], 0
-        je .END
-        mov eax, 4
-        mov ecx, [ebp + 8]
-        int 80h
-        inc dword [ebp + 8]
-        jmp .LOOP
+; .LOOP   mov eax, [ebp + 8]
+;         cmp byte [eax], 0
+;         je .END
+;         mov eax, 4
+;         mov ecx, [ebp + 8]
+;         int 80h
+;         inc dword [ebp + 8]
+;         jmp .LOOP
 
-.END    pop ecx
-        pop edx
-        pop ebx
-        pop eax
-        pop ebp
+; .END    pop ecx
+;         pop edx
+;         pop ebx
+;         pop eax
+;         pop ebp
 
-        ret
+;         ret
 
 is_error_in_args:
 
