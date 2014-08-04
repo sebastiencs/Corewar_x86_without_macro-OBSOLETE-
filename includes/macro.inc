@@ -71,10 +71,17 @@
   %push if
   %assign __curr 1
   cmp	%1, %3
-  j%+2	%%if_code
-  jmp	%{$loc}__curr
-  %%if_code:
+  j%-2	%{$loc}__curr
  %endmacro
+
+ ; %macro IF 3
+ ;  %push if
+ ;  %assign __curr 1
+ ;  cmp	%1, %3
+ ;  j%+2	%%if_code
+ ;  jmp	%{$loc}__curr
+ ;  %%if_code:
+ ; %endmacro
 
  %macro ELSEIF 3
   %ifctx if
@@ -82,13 +89,25 @@
    %{$loc}__curr:
    %assign __curr __curr+1
    cmp	%1, %3
-   j%+2	%%elseif_code
-   jmp	%{$loc}__curr
- %%elseif_code:
+   j%-2	%{$loc}__curr
   %else
    %error "T'as oublie un if !"
   %endif
  %endmacro
+
+ ; %macro ELSEIF 3
+ ;  %ifctx if
+ ;   jmp %$end_if
+ ;   %{$loc}__curr:
+ ;   %assign __curr __curr+1
+ ;   cmp	%1, %3
+ ;   j%+2	%%elseif_code
+ ;   jmp	%{$loc}__curr
+ ; %%elseif_code:
+ ;  %else
+ ;   %error "T'as oublie un if !"
+ ;  %endif
+ ; %endmacro
 
  %macro ELSE 0
   %ifctx if
