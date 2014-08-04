@@ -55,9 +55,9 @@ proc	my_ldi, core, champions, instruction
 	sub	eax, 6
 	add	eax, dword [read_value]
 
-	pushx	eax, ebx, ecx, edx
-	invoke	printf, str2, eax
-	popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str2, eax
+	; popx	eax, ebx, ecx, edx
 
 	invoke	read_arena, [core], eax, 4
 	mov	dword [read_value], eax
@@ -65,9 +65,9 @@ proc	my_ldi, core, champions, instruction
 	mov	eax, [instruction]
 	movzx	edx, byte [eax + s_instruction.type]
 
-	pushx	eax, ebx, ecx, edx
-	invoke	printf, str1, [first_value], [second_value], [read_value]
-	popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, [first_value], [second_value], [read_value]
+	; popx	eax, ebx, ecx, edx
 
 
 	invoke	is_register, edx, 3

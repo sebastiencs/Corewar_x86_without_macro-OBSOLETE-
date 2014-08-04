@@ -15,6 +15,8 @@ section .text
 extern get_value
 extern is_good_register
 
+extern my_putnbr
+
 proc	 my_or, core, champions, instruction
 
 	 _var_	value1, value2, or_value
@@ -39,16 +41,36 @@ proc	 my_or, core, champions, instruction
 	 jne	.CARRY
 
 	 mov	eax, edx
-	 mov	edx, 4
-	 mul	edx
+	 shl	eax, 2
+	 ; mov	edx, 4
+	 ; mul	edx
 
 	 mov	edx, [champions]
 	 mov	edx, [edx + s_champions.reg]
+
+	 ; mov	eax, [instruction]
+	 ; mov	eax, [eax + s_instruction.params + 8]
+	 ; shl	eax, 2
+
 	 add	edx, eax
 
 	 mov	eax, dword [or_value]
 
 	 mov	dword [edx], eax
+
+
+	 ; invoke	my_putnbr, eax
+
+	 ; mov	eax, [instruction]
+	 ; mov	eax, [eax + s_instruction.params + 8]
+	 ; shl	eax, 2
+	 ; mov	edx, [champions]
+	 ; mov	edx, [edx + s_champions.reg]
+	 ; add	edx, eax
+	 ; pushx	eax, ebx, ecx, edx
+	 ; invoke	printf, str1, [value1], [value2], [edx]
+	 ; popx	eax, ebx, ecx, edx
+
 
 .CARRY	 mov	eax, [champions]
 

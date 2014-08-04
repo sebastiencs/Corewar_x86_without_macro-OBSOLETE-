@@ -34,10 +34,11 @@ proc	my_fork, core, champions, instruction
 	mov	dword [eax], 3
 
 .NEXT	mov	eax, [eax]
-	xor	edx, edx
-	cmp	eax, 0
-	jge	.NO
-	mov	edx, -1
+	; xor	edx, edx
+	; cmp	eax, 0
+	; jge	.NO
+	; mov	edx, -1
+	cdq
 .NO	idiv	dword [idx_mod]
 	mov	[param0], edx
 	mov	eax, [champions]
@@ -52,9 +53,9 @@ proc	my_fork, core, champions, instruction
 	add	dword [new_pc], MEM_SIZE
 	jmp	.LOOP
 
-.ENDL	mov	edx, 0
-	mov	eax, [new_pc]
-	div	dword [mem_size]
+.ENDL	mov	eax, [new_pc]
+	cdq
+	idiv	dword [mem_size]
 	mov	[new_pc], edx
 
 	mov	eax, [champions]
@@ -98,5 +99,6 @@ proc	my_fork, core, champions, instruction
 .FAIL	mov	eax, -1
 
 .END	popx	ebx, edx
+
 
 endproc

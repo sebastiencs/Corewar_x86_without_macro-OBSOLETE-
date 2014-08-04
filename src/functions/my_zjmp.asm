@@ -14,7 +14,7 @@ section .text
 
 proc	my_zjmp, core, champions, instruction
 
-	_var_	param0, pc, mem_size
+	_var_	param0, pc, mem_size, idx_mod
 
 	pushx	ebx, edx
 
@@ -25,22 +25,20 @@ proc	my_zjmp, core, champions, instruction
 	mov	edx, [eax + s_champions.pc]
 	mov	dword [pc], edx
 
+	mov	dword [idx_mod], IDX_MOD
 	mov	dword [mem_size], MEM_SIZE
 
 	mov	eax, [instruction]
 	mov	eax, [eax + s_instruction.params]
-	xor	edx, edx
-	cmp	eax, 0
-	jge	.NO
-	mov	edx, -1
-.NO	idiv	dword [mem_size]
+	cdq
+	idiv	dword [idx_mod]
 
 	mov	eax, [pc]
 	sub	eax, 3
 	add	eax, edx
 
-	xor	edx, edx
-	div	dword [mem_size]
+	cdq
+	idiv	dword [mem_size]
 
 .LOOP	cmp	edx, 0
 	jge	.ENDL

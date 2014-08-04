@@ -14,6 +14,7 @@ section .data
 
 i:			dd	0
 cycle_to_die_cur:	dd	0
+str1:			db 'i = %d', 10, 0
 
 section .text
 
@@ -23,6 +24,12 @@ extern exec_instructions
 proc	manage_instructions, core
 
 	pushx	edx
+
+
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, [i]
+	; popx	eax, ebx, ecx, edx
+
 
 	IF	dword [i], e, 0
 

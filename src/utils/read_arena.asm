@@ -27,25 +27,28 @@ proc	read_arena, core, index, n_to_read
 .L1	cmp	dword [index], 0
 	jge	.L2
 
-	mov	eax, [index]
-	add	eax, MEM_SIZE
-	mov	[index], eax
+	add	dword [index], MEM_SIZE
+	; mov	eax, [index]
+	; add	eax, MEM_SIZE
+	; mov	[index], eax
 	jmp	.L1
 
 .L2	cmp	ecx, [n_to_read]
 	jge	.ENDL2
 
-	mov	eax, [value]
-	shl	eax, 8
-	mov	[value], eax
+	; mov	eax, [value]
+	; shl	eax, 8
+	; mov	[value], eax
+	shl	dword [value], 8
 
 	mov	eax, [index]
 	add	eax, ecx
-	xor	edx, edx
-	cmp	eax, 0
-	jge	.NO
-	mov	edx, -1
-.NO	idiv	dword [mem_size]
+	; xor	edx, edx
+	; cmp	eax, 0
+	; jge	.NO
+	; mov	edx, -1
+	cdq
+	idiv	dword [mem_size]
 
 	mov	eax, [core]
 	mov	eax, [eax + s_corewar.arena]
@@ -55,6 +58,10 @@ proc	read_arena, core, index, n_to_read
 	mov	eax, [value]
 	add	eax, edx
 	mov	[value], eax
+	; mov	eax, [value]
+	; add	dword [edx], eax
+	; add	eax, edx
+	;add	[value], edx
 
 	inc	ecx
 	jmp	.L2

@@ -12,7 +12,7 @@
 
 section .data
 
-str1: db 'ptr = %d', 10, 0
+str1: db 'STI ptr = %d', 10, 0
 str2: db 'STI value_to_store = %d value2 = %d value3 = %d', 10, 0
 
 section .text
@@ -200,15 +200,15 @@ proc	my_sti, core, champions, instruction
 	mov	edx, -1
 .NO3	idiv	dword [mem_size]
 
-	pushx	eax, ebx, ecx, edx
-	invoke	printf, str2, [value1], [value2], [value3]
-	popx	eax, ebx, ecx, edx
-	pushx	eax, ebx, ecx, edx
-	invoke	disp_inst, [instruction]
-	popx	eax, ebx, ecx, edx
-	pushx	eax, ebx, ecx, edx
-	invoke	printf, str1, edx
-	popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str2, [value1], [value2], [value3]
+	; popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	disp_inst, [instruction]
+	; popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, edx
+	; popx	eax, ebx, ecx, edx
 
 .LOOP	cmp	edx, 0
 	jge	.ENDL

@@ -43,8 +43,8 @@ proc	get_type_and_param, core, champions, instruction
 	mov	eax, [champions]
 	mov	eax, [eax + s_champions.pc]
 	inc	eax
-	mov	edx, 0
-	div	dword [mem_size]
+	cdq
+	idiv	dword [mem_size]
 
 	mov	eax, [core]
 	mov	eax, [eax + s_corewar.arena]

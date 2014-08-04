@@ -25,7 +25,7 @@ proc	to_negativ, nb, nb_octet
 	jne	.OR
 
 	mov	eax, [nb]
-	and	eax, 0b10000000000000000000000000000000
+	and	eax, 0b1000000000000000000000000000000
 	cmp	eax, 0
 	je	.OR
 
@@ -34,22 +34,23 @@ proc	to_negativ, nb, nb_octet
 .OR	cmp	dword [nb_octet], 2
 	jne	.END
 
-	and	eax, 0b1000000000000000
+	and	eax, 0b100000000000000
 	cmp	eax, 0
 	je	.END
 
 .DO	IF	dword [nb_octet], e, 4
 
-		mov	eax, 0
+.TEST		xor	eax, eax
 		mov	eax, [nb]
-		xor	eax, 0b11111111111111111111111111111111
-		inc	eax
-		neg	eax
+		; xor	eax, 0b11111111111111111111111111111111
+		or	eax, 0b10000000000000000000000000000000
+		; inc	eax
+		; neg	eax
 
 	ELSEIF	dword [nb_octet], e, 2
 
-		mov	eax, 0
-		mov	ax, [nb]
+		xor	eax, eax
+		mov	eax, [nb]
 		xor	ax, 0b1111111111111111
 		inc	ax
 		neg	eax

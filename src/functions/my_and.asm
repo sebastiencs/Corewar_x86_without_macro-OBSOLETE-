@@ -10,6 +10,10 @@
 
 %include "corewar.inc"
 
+section .data
+
+str1: db 'AND v1 = %d v2 = %d reg = %d', 10, 0
+
 section .text
 
 extern get_value
@@ -31,6 +35,11 @@ proc	my_and, core, champions, instruction
 	and	eax, dword [value2]
 	mov	ecx, eax
 
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, [value1], [value2], 111
+	; popx	eax, ebx, ecx, edx
+
+
 	mov	eax, [instruction]
 	mov	eax, [eax + s_instruction.params + 8]
 	mov	edx, eax
@@ -41,7 +50,16 @@ proc	my_and, core, champions, instruction
 	mov	eax, [champions]
 .TEST	mov	eax, [eax + s_champions.reg]
 
-	mov	[eax + (edx * 4)], ecx
+	mov	edx, [instruction]
+	mov	edx, [edx + s_instruction.params + 8]
+	shl	edx, 2
+	mov	[eax + edx], ecx
+
+	; mov	[eax + (edx * 4)], ecx
+
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, [value1], [value2], [eax + edx]
+	; popx	eax, ebx, ecx, edx
 
 .NO	cmp	ecx, 0
 	je	.ONE

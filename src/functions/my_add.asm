@@ -70,9 +70,9 @@ proc	 my_add, core, champions, instruction
 	 mov	eax, [value1]
 	 add	eax, [value2]
 
-	 pushx	eax, ebx, ecx, edx
-	 invoke	printf, str1, [value1], [value2], eax
-	 popx	eax, ebx, ecx, edx
+	 ; pushx	eax, ebx, ecx, edx
+	 ; invoke	printf, str1, [value1], [value2], eax
+	 ; popx	eax, ebx, ecx, edx
 
 
 	 mov	[value1], eax
@@ -89,7 +89,7 @@ proc	 my_add, core, champions, instruction
 	 add	eax, s_champions.carry
 
 	 cmp	dword [value1], 0
-	 jne	.ONE
+	 je	.ONE
 
 	 mov	dword [eax], 0
 	 xor	eax, eax

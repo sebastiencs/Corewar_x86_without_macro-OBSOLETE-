@@ -22,7 +22,7 @@ proc	write_arena_four, core, champions, to_write, index
 	mov	eax, [champions]
 	mov	eax, [eax + s_champions.color_gui]
 
-	inc	eax
+	; inc	eax
 
 	mov	[color], eax
 

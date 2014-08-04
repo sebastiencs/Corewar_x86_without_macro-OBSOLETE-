@@ -39,11 +39,8 @@ proc   get_first_value, core, champions, instruction, is_ll
        cmp	dword [is_ll], 0
        jne	.NO_LL
 
-       xor	edx, edx
-       cmp	eax, 0
-       jge	.NO1
-       mov	edx, -1
-.NO1   idiv	dword [idx_mod]
+       cdq
+       idiv	dword [idx_mod]
        mov	eax, edx
 
 .NO_LL mov	[param0_mod], eax
@@ -72,11 +69,8 @@ proc   get_first_value, core, champions, instruction, is_ll
        cmp	dword [is_ll], 0
        jne	.NOT2
 
-       xor	edx, edx
-       cmp	eax, 0
-       jge	.NO2
-       mov	edx, -1
-.NO2   idiv	dword [idx_mod]
+       cdq
+       idiv	dword [idx_mod]
        mov	eax, edx
 
 .NOT2  mov	edx, [pc]

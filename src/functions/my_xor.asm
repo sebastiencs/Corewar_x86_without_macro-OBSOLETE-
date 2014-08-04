@@ -42,8 +42,9 @@ proc	my_xor, core, champions, instruction
 	jne	.CARRY
 
 	mov	eax, [param2]
-	mov	edx, 4
-	mul	edx
+	shl	eax, 2
+	; mov	edx, 4
+	; mul	edx
 
 	mov	edx, [champions]
 	mov	edx, [edx + s_champions.reg]
@@ -53,7 +54,6 @@ proc	my_xor, core, champions, instruction
 	mov	[edx], eax
 
 .CARRY	mov	eax, [champions]
-	mov	edx, [xor_value]
 	cmp	dword [xor_value], 0
 	je	.ONE
 

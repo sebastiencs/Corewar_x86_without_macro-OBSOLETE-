@@ -72,9 +72,9 @@ proc	check_live_process, core, cycle_to_die_cur
 	xor	eax, eax
 	jmp	.END
 
-; .ONE	mov	eax, 1
+.ONE	mov	eax, 1
 
-.ONE  	xor	eax, eax
+;.ONE  	xor	eax, eax
 
 .END	popx	edx
 

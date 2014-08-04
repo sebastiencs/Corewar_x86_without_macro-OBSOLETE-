@@ -15,6 +15,8 @@ section .text
 
 proc	is_special, champions, instruction, decal
 
+	pushx	edx
+
 	mov	edx, [champions]
 	mov	edx, [edx + s_champions.pc]
 
@@ -52,8 +54,10 @@ proc	is_special, champions, instruction, decal
 	je	.SPEC
 
 .END	xor	eax, eax
+	popx	edx
 	jmp	.ENDPROC
 
 .SPEC	mov	eax, 1
+	popx	edx
 
 endproc

@@ -68,9 +68,9 @@ proc	my_sub, core, champions, instruction
 	sub	eax, dword [value2]
 	mov	dword [sub_value], eax
 
-	pushx	eax, ebx, ecx, edx
-	invoke	printf, str1, [value1], [value2], [sub_value]
-	popx	eax, ebx, ecx, edx
+	; pushx	eax, ebx, ecx, edx
+	; invoke	printf, str1, [value1], [value2], [sub_value]
+	; popx	eax, ebx, ecx, edx
 
 	invoke	is_good_register, [param2]
 	cmp	eax, 1

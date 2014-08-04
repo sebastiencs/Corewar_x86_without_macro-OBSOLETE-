@@ -21,7 +21,7 @@ proc	is_good_register, nb
 	jg	.endproc
 
 	cmp	dword [nb], 0
-	jl	.endproc
+	jle	.endproc
 
 	mov	eax, 1
 

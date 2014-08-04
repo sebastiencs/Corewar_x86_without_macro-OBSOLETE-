@@ -65,6 +65,18 @@ proc	my_lldi, core, champions, instruction
 	mov	edx, [read_value]
 	mov	[eax], edx
 
+	cmp	edx, 0
+	je	.ONE
+
+	xor	edx, edx
+	jmp	.CARRY
+
+.ONE	mov	edx, 1
+
+.CARRY	mov	eax, [champions]
+	lea	eax, [eax + s_champions.carry]
+	mov	[eax], edx
+
 .END	xor	eax, eax
 	popx	edx
 

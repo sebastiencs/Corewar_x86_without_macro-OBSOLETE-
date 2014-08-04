@@ -18,7 +18,7 @@ proc	get_size_param, type
 
 	mov	dword [size], 0
 
-.LOOP	mov	eax, [type]
+.LOOP	movzx	eax, byte [type]
 	and	eax, 0b11000000
 	cmp	eax, 0
 	je	.ENDL
@@ -36,7 +36,7 @@ proc	get_size_param, type
 
 .3	add	dword [size], 2
 
-.NEXT	shl	dword [type], 2
+.NEXT	shl	byte [type], 2
 	jmp	.LOOP
 
 .ENDL	mov	eax, [size]

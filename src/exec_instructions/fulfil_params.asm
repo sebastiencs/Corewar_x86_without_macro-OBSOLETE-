@@ -26,11 +26,12 @@ proc   fulfil_param, core, champion, instruction
        pushx	eax, ecx, edx
 
        mov	dword [mem_size], MEM_SIZE
+       mov	dword [other], 0
 
        mov	eax, [instruction]
        movzx	edx, byte [eax + s_instruction.type]
-       shr	edx, 2
-       shl	edx, 2
+       shr	dl, 2
+       shl	dl, 2
        mov	dword [tmp_type], 0
        mov	byte [tmp_type], dl
 
@@ -45,16 +46,16 @@ proc   fulfil_param, core, champion, instruction
 
        mov	ecx, 0
 
-.LOOP  mov	eax, [tmp_type]
-       and	eax, 0b11000000
-       cmp	eax, 0
+.LOOP  movzx	eax, byte [tmp_type]
+       and	al, 0b11000000
+       cmp	al, 0
        je	.ENDL
 
-       mov	eax, [tmp_type]
-       shr	eax, 6
-       mov	[other], eax
+       movzx	eax, byte [tmp_type]
+       shr	al, 6
+       mov	byte [other], al
 
-       IF	dword [other], e, 1
+       IF	byte [other], e, 1
 
        		invoke	read_arena, [core], [decal], 1
 		mov	edx, [param_ptr]
@@ -62,7 +63,7 @@ proc   fulfil_param, core, champion, instruction
 		mov	[edx], eax
 		inc	dword [decal]
 
-       ELSEIF	dword [other], e, 0b10
+       ELSEIF	byte [other], e, 0b10
 
        		lea	eax, [decal]
        		invoke	fulfil_dir, [core], [champion], [instruction], eax
@@ -80,18 +81,18 @@ proc   fulfil_param, core, champion, instruction
 
        ENDIF
 
-       mov	eax, [tmp_type]
+       movzx	eax, byte [tmp_type]
        shl	al, 2
-       mov	[tmp_type], eax
+       mov	byte [tmp_type], al
        add	ecx, 4
        jmp	.LOOP
 
-.ENDL  xor	edx, edx
-       mov	eax, [decal]
-       cmp	eax, 0
-       jge	.NO
-       mov	edx, -1
-.NO    div	dword [mem_size]
+.ENDL  mov	eax, [decal]
+       cdq
+       ; cmp	eax, 0
+       ; jge	.NO
+       ; mov	edx, -1
+       idiv	dword [mem_size]
        mov	eax, [champion]
        mov	[eax + s_champions.pc], edx
 

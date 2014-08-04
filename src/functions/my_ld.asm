@@ -37,16 +37,15 @@ proc	my_ld, core, champions, instruction
 	mov    eax, [eax + s_champions.pc]
 	mov    dword [pc], eax
 
-	xor    edx, edx
 	mov    eax, [instruction]
 	mov    eax, [eax + s_instruction.params]
-	cmp    eax, 0
-	jge    .NO
-	mov    edx, -1
-.NO	idiv   dword [idx_mod]
+	cdq
+	idiv   dword [idx_mod]
 	mov    dword [param0_mod], edx
 
-	invoke read_arena, [core], [pc], [param0_mod], 4
+	add    edx, dword [pc]
+
+	invoke read_arena, [core], edx, 4
 	mov    [value_to_load], eax
 	jmp    .NEXT
 

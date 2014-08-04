@@ -205,3 +205,31 @@ void	adisp_arena(unsigned char *arena)
 /*   } */
 /*   return (0); */
 /* } */
+
+/* int      to_negativ(int nb, int nb_octet) */
+/* { */
+/*   int           i; */
+/*   int           tmp; */
+/*   int           res; */
+
+/*   res = 0; */
+/*   i = 0; */
+/*   if ((nb_octet == 4 && (nb & 0b1000000000000000000000000000000) != 0) */
+/*       || (nb_octet == 2 && (nb & 0b100000000000000) != 0)) */
+/*   { */
+/*     if (nb_octet == 4) */
+/*       i = 0b1000000000000000000000000000000; */
+/*     else if (nb_octet == 2) */
+/*       i = 0b1000000000000000; */
+/*     while (i) */
+/*     { */
+/*       tmp = nb & i; */
+/*       if (tmp == 0) */
+/*         res += i; */
+/*       i = i >> 1; */
+/*     } */
+/*     res += 1; */
+/*     nb = -res; */
+/*   } */
+/*   return (nb); */
+/* } */
